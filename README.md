@@ -1,0 +1,1 @@
+# brateska-konverzance-plna-smichu-cz
