@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brácha Jirka & Brácha Jarda — dnešní konverzace</title>
+<style>
+  :root{
+    --paper:#f3ead9;
+    --paper-dark:#e8dcc4;
+    --wood:#5c4632;
+    --wood-dark:#3c2e21;
+    --beer:#c98a2c;
+    --beer-dark:#a3691c;
+    --jirka:#e7d3ab;
+    --jarda:#d7c7e0;
+    --jirka-text:#3c2e21;
+    --jarda-text:#3a2d44;
+    --accent:#9a3b2e;
+  }
+
+  *{box-sizing:border-box;}
+
+  body{
+    margin:0;
+    background:
+      radial-gradient(ellipse at top, rgba(255,255,255,0.15), transparent 60%),
+      repeating-linear-gradient(180deg, var(--paper), var(--paper) 2px, var(--paper-dark) 2px, var(--paper-dark) 3px);
+    font-family: 'Georgia', 'Times New Roman', serif;
+    color: var(--wood-dark);
+    padding: 0 0 80px 0;
+  }
+
+  header{
+    background: linear-gradient(180deg, var(--wood) 0%, var(--wood-dark) 100%);
+    color: var(--paper);
+    padding: 48px 20px 40px;
+    text-align:center;
+    position:relative;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.35);
+    border-bottom: 6px solid var(--beer);
+  }
+
+  header::before{
+    content:"🍌 🐔 🍺";
+    display:block;
+    font-size: 1.4rem;
+    letter-spacing: 14px;
+    margin-bottom: 14px;
+    opacity:0.9;
+  }
+
+  header h1{
+    margin:0;
+    font-family: 'Trebuchet MS', sans-serif;
+    font-size: clamp(1.6rem, 4vw, 2.6rem);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--beer);
+    text-shadow: 2px 2px 0 rgba(0,0,0,0.4);
+  }
+
+  header p{
+    margin: 10px 0 0;
+    font-size: 1.05rem;
+    color: var(--paper-dark);
+    font-style: italic;
+  }
+
+  .subtitle-strip{
+    max-width: 720px;
+    margin: -22px auto 40px;
+    background: var(--beer);
+    color: var(--wood-dark);
+    text-align:center;
+    padding: 10px 18px;
+    border-radius: 30px;
+    font-family: 'Trebuchet MS', sans-serif;
+    font-weight: bold;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+    position: relative;
+    z-index: 2;
+  }
+
+  main{
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 10px 16px;
+  }
+
+  .msg{
+    display:flex;
+    margin: 18px 0;
+    animation: fadeIn 0.4s ease-in;
+  }
+
+  @keyframes fadeIn{
+    from{opacity:0; transform: translateY(8px);}
+    to{opacity:1; transform: translateY(0);}
+  }
+
+  .msg.jirka{ justify-content:flex-start; }
+  .msg.jarda{ justify-content:flex-end; }
+
+  .bubble{
+    max-width: 78%;
+    padding: 14px 18px;
+    border-radius: 18px;
+    position: relative;
+    white-space: pre-wrap;
+    line-height: 1.55;
+    font-size: 1.02rem;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.18);
+  }
+
+  .msg.jirka .bubble{
+    background: var(--jirka);
+    color: var(--jirka-text);
+    border-bottom-left-radius: 4px;
+    border: 1px solid #c9a96a;
+  }
+
+  .msg.jarda .bubble{
+    background: var(--jarda);
+    color: var(--jarda-text);
+    border-bottom-right-radius: 4px;
+    border: 1px solid #a98fc0;
+  }
+
+  .sender{
+    display:block;
+    font-family:'Trebuchet MS', sans-serif;
+    font-weight: bold;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    margin-bottom: 6px;
+    opacity: 0.75;
+  }
+
+  .msg.jirka .sender{ color: var(--wood); }
+  .msg.jarda .sender{ color: #5e4870; }
+
+  .system-note{
+    text-align:center;
+    margin: 26px auto;
+    max-width: 600px;
+    font-family:'Trebuchet MS', sans-serif;
+    font-size: 0.85rem;
+    color: var(--wood);
+    font-style: italic;
+    position: relative;
+  }
+  .system-note::before, .system-note::after{
+    content:"";
+    display:inline-block;
+    width: 60px;
+    height: 1px;
+    background: var(--wood);
+    vertical-align: middle;
+    margin: 0 10px;
+    opacity: 0.4;
+  }
+
+  .reaction{
+    text-align:center;
+    margin: 6px auto 26px;
+    font-size: 1.6rem;
+  }
+
+  .quote-reply{
+    border-left: 3px solid var(--accent);
+    padding: 6px 10px;
+    margin-bottom: 8px;
+    font-size: 0.88rem;
+    opacity: 0.75;
+    font-style: italic;
+    background: rgba(255,255,255,0.25);
+    border-radius: 4px;
+  }
+
+  .lyrics{
+    font-family: 'Courier New', monospace;
+    font-size: 0.95rem;
+    background: rgba(255,255,255,0.35);
+    border-radius: 10px;
+    padding: 10px 14px;
+  }
+
+  footer{
+    text-align:center;
+    margin-top: 50px;
+    padding: 26px 16px 10px;
+    font-family:'Trebuchet MS', sans-serif;
+    color: var(--wood);
+    font-size: 0.95rem;
+  }
+
+  footer .stamp{
+    display:inline-block;
+    border: 2px dashed var(--accent);
+    color: var(--accent);
+    padding: 8px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    transform: rotate(-3deg);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Tři tuny banánů, kočka v motoru a slepičí sen</h1>
+  <p>Dnešní historická konverzace mezi bráchou Jirkou a bráchou Jardou</p>
+</header>
+
+<div class="subtitle-strip">100% originál, beze změny, od začátku do konce ⬇</div>
+
+<main>
+
+  <div class="msg jirka">
+    <div class="bubble">
+      <span class="sender">brácha jarda</span>Musím ti něco rict
+....
+Ty tři tuny banánů jsou připravené. Mám je složit k tobě na zahradu, nebo k sousedovi?
+    </div>
+  </div>
+
+  <div class="msg jirka">
+    <div class="bubble">
+      <span class="sender">brácha jirka</span>ty banány dovez do hostince at se kuchar nenudí,, 
+    </div>
+  </div>
+
+  <div class="msg jarda">
+    <div class="bubble">
+      <span class="sender">brácha jarda</span>To jsem se Stima Banana táhl až tobě domů tak jo no hostinec si nanich pochutná
+    </div>
+  </div>
+
+  <div class="msg jirka">
+    <div class="bubble">
+      <span class="sender">brácha jirka</span>jj aspon budou jíst zdravě.
+    </div>
+  </div>
+
+  <div class="msg jarda">
+    <div class="bubble">
+      <span class="sender">brácha jarda</span>Já nemusel banán jako 🍌 ale banán jako banan
+    </div>
+  </div>
+
+  <div class="reaction">🤣🤣🤣 🤣🤣🤣🤣</div>
+  <div class="system-note">reakce obou brácha jirka a brácha jarda</div>
+
+  <div class="msg jirka">
+    <div class="bubble">
+      <span class="sender">brácha jirka</span>dneska jsem šel ven a potkal jsem upíra, upír mi říká hele co to máš na té hlavě, no tašku banánu, no a já sem si myslel že to je tvuj mozek,, ale ne to su přece banány pro kuchaře, no jo, a kuchař pak uvidí 3 tuny banánu, a řekne no do prdele to budu loupat snad rok, ne to budeš lopat dva dny,, a ty banány co nejsou banáni ale banáni, které vidíme všude ale jsou schovaní..
+    </div>
+  </div>
+
+  <div class="msg jarda">
+    <div class="bubble">
+      <span class="sender">brácha jarda</span>System Alert: Váš telefon byl vybrán do testovacího programu sledování polohy a aktivity. Pro odhlášení napište "STOP". Za každou odpověď vám bude účtováno 50 Kč.
+    </div>
+  </div>
+
+  <div class="msg jirka">
+    <div class="bubble">
+      <span class="sender">brácha jirka</span>Error 404: Peněženka nenalezena. Poplatek byl automaticky přesměrován na odesílatele. Gratulujeme, právě jste si předplatil prémiový balíček "Slepice v pračce" za 500 Kč denně. Pro zrušení pošlete 12 prázdných bublin
+    </div>
+  </div>
+
+  <div class="msg jarda">
+    <div class="bubble">
+      <span class="sender">brácha jarda</span>Děkujeme. Vaše předplatné služby "Každodenní fakta o kočkách" bylo úspěšně aktivováno. Poplatek 50 Kč odečten. Zítra se můžete těšit na první kočičí fakt!
+    </div>
+  </div>
+
+  <div class="msg jirka">
+    <div class="bubble">
+      <span class="sender">brácha jirka</span>Děkujeme, že využíváte službu Kočičí fakta VIP. Vaše platba 50 Kč byla zaevidována. Zároveň vám byla aktivována prémiová nadstavba "Nepřetržité mňoukání v 3:00 ráno" za 999 Kč/den. Pro deaktivaci zašlete 3 tuny banánů kuchaři do hostince.
+    </div>
+  </div>
+
+  <div class="msg jarda">
+    <div class="bubble">
+      <span class="sender">brácha jarda</span>Ahoj brácha , platí ten dnešek? stisknout odeslat ne počkej ještě to neposílej sakra jak se to vypíná kotičku nejez tu gumu z boty neeee neposílej to
+    </div>
+  </div>
+
+  <div class="msg jirka">
+    <div class="bubble">
+      <span class="sender">brácha jirka</span>ahoj brácha, kočiči mnoukaní se vypíná když zadaš správné heslo ty ho moc dobře znáš.
+    </div>
+  </div>
+
+  <div class="msg jarda">
+    <div class="bubble">
+      <span class="sender">brácha jarda</span>3236
+    </div>
+  </div>
+
+  <div class="msg jirka">
+    <div class="bubble">
+      <span class="sender">brácha jirka</span>safra on to vypnul
+    </div>
+  </div>
+
+  <div class="msg jirka">
+    <div class="bubble">
+      <span class="sender">brácha jirka</span>no pátek stále platí, tyjo, takového bráchu jsem nikdy neměl,, ondra si sice hrál na bráchu, ale toto pouto my jsme neměli,, ale mi dva ano, stebou je to lepší protože si oba rozumíme a dokažem se pochcat smíchy, 🤣🤣
+    </div>
+  </div>
+
+  <div class="msg jarda">
+    <div class="bubble">
+      <span class="sender">brácha jarda</span>Nechce my startovat sekačka musím vytáhnout asi motor co tak to ho si vytáhnout nechceš vole vědět proč my ta sekačka. Nestartovala  to nechtěj asi sem ostříhal kočku a vipadá nějak takle
+    </div>
+  </div>
+
+  <div class="msg jirka">
+    <div class="bubble">
+      <span class="sender">brácha jirka</span>ta sekačka s kočkou v motoru, a když ten motor nastartuješ začne mnoukat a štěkat do toho, a říkat brácho brácho za tebou je drákula, a kouta ti z motoru.
+    </div>
+  </div>
+
+  <div class="msg jarda">
+    <div class="bubble">
+      <span class="sender">brácha jarda</span>Drákula na mě nekoukal to tam koukal čertuv roh ale já jsem myslel že jsem ty kočce usekl kokota
+    </div>
+  </div>
+
+  <div class="msg jirka">
+    <div class="bubble">
+      <span class="sender">brácha jirka</span>a chodicí kokot, kokot jde po vesnici a hledá nijakou žábu a najde jí ale není to žába ale slepice, a slepice řekne ahojky kokote jdeš se semnou projít, a kokot řekne no jdu se projít ale k tobě do postele.
+    </div>
+  </div>
+
+  <div class="msg jarda">
+    <div class="bubble">
+      <span class="sender">brácha jarda</span>A slepice na to já už v posteli jednoho kokota mám a kokot tak toho kokota vyhoď a maš pokoj ne a slepice tak jo vzala ho a hodila ho do popelnice a kokot ne mě ale jeho a slepice sorry já jižního kokota nechci mám sveho
+    </div>
+  </div>
+
+  <div class="msg jarda">
+    <div class="bubble">
+      <span class="sender">brácha jarda</span>A slepice na to já už v posteli jednoho kokota mám a kokot tak toho kokota vyhoď a maš pokoj ne a slepice tak jo vzala ho a hodila ho do popelnice a kokot ne mě ale jeho a slepice sorry já jižního kokota nechci mám sveho
+    </div>
+  </div>
+
+  <div class="msg jirka">
+    <div class="bubble">
+      <span class="sender">brácha jirka</span>🤣🤣🤣 ,,,.. no já mam taky svého kokote ty slepice, já ti povím tich slepic co sem měl doma no to ti řeknu ty jeli jak namazaní stoj,, až se ztoho stala velká slepičí rodinka, a pak šli do školy a učitelé řekli ježiš maraj minulí rok tady byly samí kokoti a tento rok tady máme samé slepice a kokotince.
+    </div>
+  </div>
+
+  <div class="msg jarda">
+    <div class="bubble">
+      <span class="sender">brácha jarda</span>🤣🤣🤣 ,,,.. no já mam taky svého kokote ty slepice, já ti povím tich slepic co sem měl doma no to ti řeknu ty jeli jak namazaní stoj,, až se ztoho stala velká slepičí rodinka, a pak šli do školy a učitelé řekli ježiš maraj minulí rok tady byly samí kokoti a tento rok tady máme samé slepice a kokotince.
+    </div>
+  </div>
+
+  <div class="msg jirka">
+    <div class="bubble">
+      <span class="sender">brácha jirka</span>tak to se ti povedlo,, i moje logické myšlení, právě se zaseklo.
+    </div>
+  </div>
+
+  <div class="msg jarda">
+    <div class="bubble">
+      <span class="sender">brácha jarda</span>🤣
+    </div>
+  </div>
+
+  <div class="msg jirka">
+    <div class="bubble">
+      <span class="sender">brácha jirka</span>ve škole dneska bude přednáška o tom jak se budou vařit slepice, a ty slepice se zeptájí jak budeme dnes udělaní, a pan kuchař řekne, no dneska budete udělání ze předu a zezadu, a slepice se zeptájí jak zepředu a zedadu no přece suchej do vnitř a mokrej ven, aha, tak to bude zase bolet jak u nás doma když tam byly samí kokoti a slepičinse  haha ic prank
+    </div>
+  </div>
+
+  <div class="msg jarda">
+    <div class="bubble">
+      <span class="sender">brácha jarda</span>Ale dnes není škola jsou přece prázdniny 🤣steto trochu nevychytal takže dnes ne až porazdninách ale to se vám nepovede protože to řeknu vaší přítelkyni ta vám dá že vám upadne takže bude pohehe
+    </div>
+  </div>
+
+  <div class="msg jirka">
+    <div class="bubble">
+      <span class="sender">brácha jirka</span>v pátek jedu někam kam nevím a přece vím za bráchou,, a brácha mi poví tak co jak se ti líbíli vtipi a já povím no málem sem se pochcal smíchy, a brácha mi řekne no já taky měl sem celí gauč mokrý, že to málem vytopilo sousedy pod námi.
+    </div>
+  </div>
+
+  <div class="msg jarda">
+    <div class="bubble">
+      <span class="sender">brácha jarda</span>😂podnájmy nejsou sousedi ale nic max zem a pavouci
+    </div>
+  </div>
+
+  <div class="msg jirka">
+    <div class="bubble">
+      <span class="sender">brácha jirka</span>to nevadí aspon ti pavouci si mohly zaplavat,, a pavouk řekne ješi marja, zase bude pršet, a nakonec to nebil déšt ale slejvák, povím ti pravdu mě už docházejí nápady a slova...
+    </div>
+  </div>
+
+  <div class="msg jarda">
+    <div class="bubble">
+      <span class="sender">brácha jarda</span>Pavouky aspoň zaplavím porotože pořád chčiju anevím kdy to přestane možná zaplaví. Celou planetu i vesmír a pak nikdo tu nebude proč protože se údusí míma chcankama
+    </div>
+  </div>
+
+  <div class="msg jirka">
+    <div class="bubble">
+      <span class="sender">brácha jirka</span>pověs mi kam na to chodíš,, no já vím přece ty chcanky budou místo piva, proč protože pivo došlo a chcanek je celí planeta celí vesmír, a přece i misto vody,  to je blbos co píšu..
+
+Ahoj Pavle, jak se máš se ptá Tomáš,, Tomáš odpoví no zase bude pršet a co bude pršet, no přece slepice, kokoti drákula, kočka v motoru, aha to bude zase dneska den, a víš co bylo včera no co plná hospoda 3 Tun banánu, samé pivo vodka becher,, a co bude zítra, no přece bude velká grilovačka slepic,, zase slepice ty su pořád, no aspon máme co k jídlu, a pak přijde drákula a řekne no já nevím, není tich slepic málo, co ani neumí snášet zlaté vejce,, a ano slepice budou kokoti už je vyrábějí, a kdy budou no přece zítra večer, no a co bude další den no přece škola ne škola né tam je to uplně divné tam stráší mrtvoly ze záhrobí,, a hraje tam staršidelná písen od Dymytry, písen ze záhrobí,, baf
+
+.no a až zítra večer dorazí ty nově vyrobené slepičí kusy, tak pozor, u brány je převezme kuchař s taškou banánů na hlavě, řekne "taková blbost a kolik to dalo loupání", zapálí gril z toho sekačkového motoru a Dymytry začnou místo kytar hrát na ohořelé dráty od plotu, takže radši tu kočku z motoru vyndej, protože jinak nám vyštěká celej vesmír!
+    </div>
+  </div>
+
+  <div class="msg jarda">
+    <div class="bubble">
+      <span class="sender">brácha jarda</span>Slepice je hodně až moc ale kokoti skrz nich vimíraj Pecák až moc že umírají a co měly přitom sexu rádi piseň despasito tak jim zahrajem na pohřbu despasito a kokot se probudí stoho hrobu a řikajim co to je a oni jen rádio hrají dnes despasito a kokot no to snad né mě stoho upadnou koule ale pane kokote dít ležite v hrobě ty koule už vám upadly a kokot no dopiči proč žiju teda a oni to se vám je. Zdá
+    </div>
+  </div>
+
+  <div class="msg jirka">
+    <div class="bubble lyrics">
+      <span class="sender">brácha jirka</span>Despacito hraje tiše,
+obyvatel hrobu těžce dýše.
+Koule v prachu, to je zrada,
+Drákula už kope hada.
+Slepice se jenom smějou,
+banány se v pekle hřejou!
+    </div>
+  </div>
+
+  <div class="msg jarda">
+    <div class="bubble">
+      <span class="sender">brácha jarda</span>Tojo a slepice se k nám zas ženou
+
+Co bych neřek tak bych neřek kdybych to neřek to bych neřek a kdybych to neřek ta to ani neřeknu
+    </div>
+  </div>
+
+  <div class="msg jirka">
+    <div class="bubble">
+      <span class="sender">brácha jirka</span>já tí povím ale nepovím přece ti po povím ale co ti povím nepovím co ti řeknu neřeknu, a co řekneš ty neřekneš ty, kdo to ví přece to ví a on to nepoví, ale poví co poví to nikdo neví a proč to neví protože to ví a nepoví ale já už to přece vím ale nevím přece vím hraje hudba ze záhrobí, záhrobí zahrobí , a ta hudba nekoncí nekoncí,, kočky štekájí psy mnoukají, a kráví jen čumí, čumí čumí, héj poves mi naco tak koukaž no přece na drákulu se slepicí,, ale oni jen stojí a mlcí a proč mlčí to nikdo neví a proč to neví přece neví, jede takle osek ta táboru honí ocas zázvoru kokot se zastaví kouka na to drákulu a zpívámu héj héj to je dneska den héj héj naně se podívěj héj héj kdoto ví přece to ví.
+    </div>
+  </div>
+
+  <div class="msg jarda">
+    <div class="bubble">
+      <span class="sender">brácha jarda</span>Kámo, tos podal ten inzerát ty? Už mi psali tři lidi na tu tvoji starou koloběžku / herní židli za dvě stovky a chtějí tvé číslo... Mám jim ho dát?
+    </div>
+  </div>
+
+  <div class="msg jirka">
+    <div class="bubble">
+      <span class="sender">brácha jirka</span>jasně, dej jim ho! Ale rovnou jim vyřiď, že k té židli dostanou zdarma i oholenou kočku do motoru a Drákulu, co nesnáší zlatá vejce. Osobní odběr u Tábora, heslo při předání zní: Héj héj, to je dneska den!
+    </div>
+  </div>
+
+  <div class="msg jarda">
+    <div class="bubble">
+      <span class="sender">brácha jarda</span>Ok, dal jsem ho tomu týpkovi. Říkal, že ti hned volá, protože pro tu starou plastovou popelnici / rozbitou židli jede hned teď a zaplatí ti to v pětikorunách v pytli od brambor. 💀
+    </div>
+  </div>
+
+  <div class="msg jirka">
+    <div class="bubble lyrics">
+      <span class="sender">brácha jirka</span>[Sloka 1]
+Prodám židli za dvě kila,
+včera v ní ještě slepice žila.
+Koloběžka k tomu zdarma,
+bude z toho velká farma!
+Dvě stovky jsou super cena,
+kuchař z toho pad' na kolena.
+
+[Refrén]
+Tak jim dej to číslo brácho,
+ať si koupí tohle psycho!
+Motor vrčí, kočka štěká,
+Drákula tam na ně čeká.
+Héj héj, to je dneska kšeft,
+každej kokot chytne nerv!
+
+[Sloka 2]
+Kdo zavolá jako první,
+banánama hned ho krmí.
+Tři tuny jich čeká v koutě,
+Despacito hraje krutě.
+A ta židle herní stará?
+Ta tě doveze do Tábora!
+
+[Bridge / Zpomalení do hororu]
+...haló, haló, tady inzerce...
+...prodám i motor ze sekačky...
+...ale pozor... hudba ze záhrobí je v ceně...
+...a nevypneš to, protože to nejde...
+...kdo to ví? Přece to ví...
+
+[Závěr / Epické finále]
+Takže jim to číslo pošli,
+aby na tu židli došli!
+Ať si vezmou zlatej rýč,
+jinak ať jdou radši pryč!
+BAF!
+    </div>
+  </div>
+
+  <div class="msg jarda">
+    <div class="bubble">
+      <span class="sender">brácha jarda</span>Ty vole, ty fakt prodáváš 50 litrů použitého fritovacího oleje za dvě kila?! 😭 Pán psal, že už startuje dodávku!
+    </div>
+  </div>
+
+  <div class="msg jirka">
+    <div class="bubble">
+      <span class="sender">brácha jirka</span>a dodavka už jede, jede jede zamnou proti pitel brambor, brambory už došli slepice už scíplí, 50l voleje už nejní, ale pivo dojede do dodávky, a dodávka už jede přece už jde, jede jede zamnou pro ten pytel brambor, a plnej pitel bangogu, bangogu, bangogové ty se mají chodí bosí přes kamení, kemení je píchá přeče jim tu nohu rozpíchá, píchy píchy pích přece propipích.
+    </div>
+  </div>
+
+  <div class="msg jarda">
+    <div class="bubble">
+      <span class="sender">brácha jarda</span>Kámo, ty jsi regulérně básník 💀 Každopádně týpek z dodávky prý souhlasí i s tím pivem a říká, že za ten plnej pytel bangogu ti přidá ještě dvě slepice zdarma! 🐔
+
+Upřímně, po týhle zprávě ruším dodávku s bramborama a radši ti posílám odchytovou službu 😭🚑 Píchy píchy pích propípích?!
+    </div>
+  </div>
+
+  <div class="msg jirka">
+    <div class="bubble">
+      <span class="sender">brácha jirka</span>Brácho,, to se ti povedlo,, povím ti že kamoši už nejsme oritiže mi jsem co!.
+    </div>
+  </div>
+
+  <div class="msg jirka">
+    <div class="bubble">
+      <div class="quote-reply">odpověď na zprávu od bráchy jarda: „Kámo, ty jsi regulérně básník 💀 Každopádně týpek z dodávky prý souhlasí i s tím pivem a říká, že za ten plnej pytel bangogu ti přidá ještě dvě slepice zdarma! 🐔 Upřímně, po týhle zprávě ruším dodávku s bramborama a radši ti posílám odchytovou službu 😭🚑 Píchy píchy pích propípích?!"</div>
+      <span class="sender">brácha jirka odpovídá</span>máš pravdu výhodá když hudbu slyšíš v hlavě, protože jsem zjistil že mám hudební sluch,, protože mě baví skládát písně,,
+    </div>
+  </div>
+
+  <div class="msg jarda">
+    <div class="bubble">
+      <span class="sender">brácha jarda</span>Přesně tak brácho, od teď jsme bráchové z jedné dodávky! 🤝🚚 Příště dovezu radši ty banány 🍌😂
+    </div>
+  </div>
+
+  <div class="msg jirka">
+    <div class="bubble">
+      <div class="quote-reply">reakce: brácha jarda dal srdíčko na mou zprávu ❤️</div>
+      <span class="sender">brácha jirka</span>máš pravdu brácho protože kamarádí nej su tak sehraní jak bráchové, protože mi si tak rozumíme a dokážem si navzájem rýpnout, a ani se u toho nepohádat, sem rád že sem tě poznal brácho.
+    </div>
+  </div>
+
+  <div class="msg jarda">
+    <div class="bubble">
+      <span class="sender">brácha jarda</span>Gratulujeme! Váš telefonní účet vyhrál 1. místo v soutěži "Živá koza do každé rodiny". Svoz živého zvířete proběhne zítra mezi 8:00 a 10:00 na vaši adresu. Pro odřeknutí výhry uveďte kód stvrzenky.
+    </div>
+  </div>
+
+  <div class="msg jirka">
+    <div class="bubble">
+      <span class="sender">brácha jirka</span>váš telefoní učet už hraje tu naší hymnu která zní jako žívá koza, koza koza héj kozo ty si prostě boří héj héj boží, svoz každé rodiny už je už je jo a zítra to bude asi problím to asi nestihnu ty bananí natrhat do 8:00 a do 10:00, to budu trhat asi rok a kuchař ten má tento rok asi málo brambor s bananí,, tak řekne no to je zase den no ta učetní má jen banannoví papír protože nemá peníze na opravdoví papíroví sen s pytle brambor, no a zase to bude super, ten drákuloví banánoví kolácovo slepičí sen ten uletěl koulemá ven, no a kam letěl přece daleko ven a kam daleko ani navigace o něm neví kam letě..
+    </div>
+  </div>
+
+  <div class="msg jarda">
+    <div class="bubble">
+      <span class="sender">brácha jarda</span>Ty vole, z banánovýho papíru účetní nemůžu! 🤣🤣 Každopádně zpráva z Agrodružstva říká, že ta koza Božena miluje brambory s banánem, tak jí to ten kuchař do zítřka 8:00 musí připravit
+
+Já to normalně budu visilat živě ať se i lidi zasmějí
+    </div>
+  </div>
+
+  <div class="msg jarda">
+    <div class="bubble">
+      <span class="sender">brácha jarda</span>Tak de babička do hospody a ptá se je tu pepiček a hospodský ano je tak de za pepičke a zrovna sedí že šefem u stolu a babička kde mám to pivo pepičku měljsmy ho donést před hodinou a šef nezlobte se pepiček vám ho obědnal ale zatočla šému hlava a babička a proč se mu zatočila hlava no on ho vypil
+    </div>
+  </div>
+
+  <div class="msg jirka">
+    <div class="bubble">
+      <span class="sender">brácha jirka</span>a babička na to: "Vypil ho?! Tak proto má teď hlavu zamotanou jako ten ztracenej Drákulův sen! Vždyť to bylo to speciální pivo z dodávky, co mělo zachránit kmen Bangogů před kamením! Pepíčku, ty seš normálně horší než ten zoufalej kuchař s banánama. A kdo to pivo teď půjde vysvětlit účetní? Ta už ten tvůj účet za hospodu nemá na jakej banánovej papír napsat, protože ten poslední jí k obědu sežrala koza Božena!.
+    </div>
+  </div>
+
+  <div class="msg jarda">
+    <div class="bubble">
+      <span class="sender">brácha jarda</span>Babičko já zato nemohu měl jsem žizen ale takle jsem to nečekal že to dopadne sorry ty prachy seženu přijede dodávka a hnet jedu loupit banku a babička proboha to ne ještě tě zavřou babi to maš fuk jestli budu zavřenej doma je to stejný
+    </div>
+  </div>
+
+  <div class="msg jirka">
+    <div class="bubble">
+      <span class="sender">brácha jirka</span>a šéf hospody se začne tlouct do stolu a řve: "Loupit banku s dodávkou? Ty vole Pepíčku, vždyť ta dodávka nemá už ani kapku toho vyjetýho fritovacího oleje! Řídí to Drákula se slepicí na klíně a jedinej lup, co tam najdeš, je ten ztracenej banánovo-slepičí sen, co uletěl mimo navigaci! Babička má pravdu, doma seš možná zavřenej, ale v base ti aspoň do ucha neřve koza Božena, že chce další pivo!
+    </div>
+  </div>
+
+  <div class="msg jarda">
+    <div class="bubble">
+      <span class="sender">brácha jarda</span>To máte pane šefe pravdu to neřve ale za s pomě budou řvat jiní  a v noci co budu proživat jujky tam si aspoň něco užiju než hrát z bankou a kozou jen karty šipky u piva a já mít jen limču
+    </div>
+  </div>
+
+  <div class="msg jirka">
+    <div class="bubble">
+      <span class="sender">brácha jirka</span>ale pane já nenesu limču ale pivo, které dneska podojila ovce, která jí jen zlatá vajčka, která jsou čokoládoví, tak dojí čokoladové pivo, které vám pán šef z radostí donese na zlatém bananovém podnose, a to budete koukat, co bude k obědu, to bude slepicí štouchná bnanánová kaše z kravským mlékem a čokoládovou bananovou polevou.
+    </div>
+  </div>
+
+  <div class="msg jarda">
+    <div class="bubble">
+      <span class="sender">brácha jarda</span>Toby bych  řekl že bude slepičí sračka ale dám si to aspoň něco ochutnám něco noveho
+    </div>
+  </div>
+
+  <div class="msg jirka">
+    <div class="bubble">
+      <span class="sender">brácha jirka</span>jo a ta sračka bude od ovcí a drákuly, a drákula dneska bude vařit zaječí guláš na pivě, a ten bude dávat každému hostovi který to bude chtít ochutnat a pak hosté poví pane drákula to je dneska super oběd, no přece ten dnešní oběd byl super ale zítra to bude ještě lepší, no a co bude no nebude ale bude co bude přece zajecí kachněčí omáčka na paprice zalitá krví.
+    </div>
+  </div>
+
+  <div class="system-note">Konec</div>
+
+</main>
+
+<footer>
+  <div class="stamp">100% ORIGINÁL — BEZ ÚPRAV</div>
+  <p>brácha Jirka &amp; brácha Jarda — jedna dodávka, dvoje bráchovství 🤝🚚</p>
+</footer>
+
+</body>
+</html>
