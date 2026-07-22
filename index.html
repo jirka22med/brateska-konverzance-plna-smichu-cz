@@ -22,14 +22,14 @@
   *{box-sizing:border-box;}
 
   body{
-    margin:0;
-    background:
-      radial-gradient(ellipse at top, rgba(255,255,255,0.15), transparent 60%),
-      repeating-linear-gradient(180deg, var(--paper), var(--paper) 2px, var(--paper-dark) 2px, var(--paper-dark) 3px);
-    font-family: 'Georgia', 'Times New Roman', serif;
-    color: var(--wood-dark);
-    padding: 0 0 80px 0;
-  }
+  margin:0;
+  background: 
+    radial-gradient(ellipse at top, rgba(255,255,255,0.15), transparent 60%),
+    var(--paper);
+  font-family: 'Georgia', 'Times New Roman', serif;
+  color: var(--wood-dark);
+  padding: 0 0 80px 0;
+}
 
   header{
     background: linear-gradient(180deg, var(--wood) 0%, var(--wood-dark) 100%);
@@ -219,7 +219,7 @@
 
 <main>
 
-  <div class="msg jirka">
+  <div class="msg jarda">
     <div class="bubble">
       <span class="sender">brácha jarda</span>Musím ti něco rict
 ....
@@ -344,7 +344,7 @@ Ty tři tuny banánů jsou připravené. Mám je složit k tobě na zahradu, neb
     </div>
   </div>
 
-  <div class="msg jarda">
+  <div class="msg jirka">
     <div class="bubble">
       <span class="sender">brácha jirka</span>🤣🤣🤣 ,,,.. no já mam taky svého kokote ty slepice, já ti povím tich slepic co sem měl doma no to ti řeknu ty jeli jak namazaní stoj,, až se ztoho stala velká slepičí rodinka, a pak šli do školy a učitelé řekli ježiš maraj minulí rok tady byly samí kokoti a tento rok tady máme samé slepice a kokotince.
     </div>
@@ -623,6 +623,147 @@ Já to normalně budu visilat živě ať se i lidi zasmějí
 
   <div class="system-note">Konec</div>
 
+    
+    
+   <div class="system-note">Nezávislé vyhodnocení</div>
+
+  <div class="score-box">
+    <h2 class="score-title">Kdo měl lepší vtipy?</h2>
+
+    <table class="score-table">
+      <thead>
+        <tr>
+          <th>Kategorie</th>
+          <th>Brácha Jirka</th>
+          <th>Brácha Jarda</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Absurdita / nápad</td>
+          <td>Silný — kočka v motoru, chodicí kokot, drákula co nesnáší zlatá vejce</td>
+          <td>Silný — koza Božena, fritovací olej, banánový papír na účet</td>
+        </tr>
+        <tr>
+          <td>Návaznost na druhého</td>
+          <td>Výborná — bere Jardovu myšlenku a rozvíjí ji o level dál</td>
+          <td>Výborná — hází krátké, ostré odrazové můstky, na kterých Jirka staví</td>
+        </tr>
+        <tr>
+          <td>Vytrvalost / objem</td>
+          <td>Dlouhé proudy vědomí, které se nezaseknou</td>
+          <td>Kratší, úderné, často nastartuje nové téma</td>
+        </tr>
+        <tr>
+          <td>Kreativita formy</td>
+          <td>Přidává i písně a básně (Despacito báseň, celá skladba o židli)</td>
+          <td>Drží se hlavně prózy a dialogů, ale silných punchlinů</td>
+        </tr>
+        <tr>
+          <td>Nejlepší moment</td>
+          <td>„Despacito hraje tiše, obyvatel hrobu těžce dýše..." — nečekaně dobrá poezie z absurdní situace</td>
+          <td>„Ty vole, z banánovýho papíru účetní nemůžu!" — nejlepší reakční punchline konverzace</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="score-final">
+      <div class="score-final-item jirka-score">
+        <span class="score-name">Brácha Jirka</span>
+        <span class="score-number">8.5<span class="score-max">/10</span></span>
+      </div>
+      <div class="score-final-item jarda-score">
+        <span class="score-name">Brácha Jarda</span>
+        <span class="score-number">8<span class="score-max">/10</span></span>
+      </div>
+    </div>
+
+    <p class="score-verdict">Celkově těsné, ale mírně navrch Jirka — hlavně díky schopnosti proměnit blbost v píseň nebo báseň, což je těžší disciplína než hodit vtipnou hlášku. Jarda ale drží tempo lépe v rychlých výměnách a jeho reakce jsou často přesnější a kratší, což je taky svoje umění.</p>
+  </div>
+
+  <style>
+    .score-box{
+      max-width: 700px;
+      margin: 30px auto;
+      background: rgba(255,255,255,0.35);
+      border: 1px solid #c9a96a;
+      border-radius: 14px;
+      padding: 22px 24px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+    }
+    .score-title{
+      font-family:'Trebuchet MS', sans-serif;
+      color: var(--wood-dark);
+      text-align:center;
+      margin: 0 0 16px;
+      font-size: 1.3rem;
+    }
+    .score-table{
+      width:100%;
+      border-collapse: collapse;
+      font-size: 0.92rem;
+      margin-bottom: 20px;
+    }
+    .score-table th{
+      font-family:'Trebuchet MS', sans-serif;
+      background: var(--beer);
+      color: var(--wood-dark);
+      padding: 8px 10px;
+      text-align:left;
+    }
+    .score-table td{
+      padding: 8px 10px;
+      border-bottom: 1px solid #d9c9a3;
+      vertical-align: top;
+      color: var(--wood-dark);
+    }
+    .score-table tr:nth-child(odd) td{
+      background: rgba(255,255,255,0.3);
+    }
+    .score-final{
+      display:flex;
+      justify-content:center;
+      gap: 40px;
+      margin: 18px 0;
+      flex-wrap: wrap;
+    }
+    .score-final-item{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      padding: 10px 24px;
+      border-radius: 12px;
+    }
+    .jirka-score{ background: var(--jirka); }
+    .jarda-score{ background: var(--jarda); }
+    .score-name{
+      font-family:'Trebuchet MS', sans-serif;
+      font-weight:bold;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+    .score-number{
+      font-size: 1.8rem;
+      font-weight:bold;
+      color: var(--accent);
+    }
+    .score-max{
+      font-size: 1rem;
+      color: var(--wood);
+      font-weight:normal;
+    }
+    .score-verdict{
+      font-style: italic;
+      text-align:center;
+      color: var(--wood-dark);
+      line-height: 1.5;
+      margin: 0;
+    }
+  </style> 
+    
+    
 </main>
 
 <footer>
